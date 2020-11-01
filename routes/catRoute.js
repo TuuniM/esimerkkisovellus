@@ -5,28 +5,16 @@ const router = express.Router();
 const multer = require('multer');
 const catController = require('../controllers/catController');
 
-const upload = multer ({dest: './uploads/'});
+const upload = multer({dest: './uploads/'});
 
 router.get('/', catController.cat_list_get);
 
 router.get('/:id', catController.cat_get);
 
-router.get('/:id', (req, res) => {
-  console.log(req.params.id);
-  res.send(catModel.cats[req.params.id]);
-});
+router.post('/', upload.single('cat'), catController.cat_create_post);
 
-router.post('/', upload.single('cat'), (req, res) => {
-  console.log(req.body, req.file);
-  res.send('With this endpoint you can add cats.');
-});
+router.put('/', catController.cat_update_put);
 
-router.put('/', (req, res) => {
-  res.send('With this endpoint you can edit cats');
-});
-
-router.delete('/', (req, res) => {
-  res.send('With this endpoint you can delete cats.');
-});
+router.delete('/:id', catController.cat_delete);
 
 module.exports = router;
